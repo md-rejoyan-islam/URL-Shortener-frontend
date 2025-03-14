@@ -1,26 +1,36 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { ScissorsLineDashed, Menu, X } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, ScissorsLineDashed, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-export function MainNav() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const pathname = usePathname()
+export function MainNav({
+  from,
+  isAuthenticated,
+}: {
+  from: string;
+  isAuthenticated: boolean;
+}) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/dashboard", label: "Dashboard" },
     { href: "/analytics", label: "Analytics" },
-  ]
+    { href: "/login", label: "Login" },
+  ];
 
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
-  }
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  console.log("isAuthenticated", "Login" === "Login" && !isAuthenticated);
 
   return (
     <div className="flex items-center justify-between w-full md:w-auto md:justify-start md:gap-10">
@@ -30,14 +40,17 @@ export function MainNav() {
       </Link>
 
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex gap-6">
+      <nav className={cn(from === "home" ? "hidden md:flex gap-6" : "hidden")}>
         {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
+              item.label === "Login" && !isAuthenticated
+                ? "block md:hidden"
+                : "",
               "text-sm font-medium transition-colors hover:text-primary",
-              pathname === item.href ? "text-primary" : "text-muted-foreground",
+              pathname === item.href ? "text-primary" : "text-muted-foreground"
             )}
           >
             {item.label}
@@ -46,8 +59,18 @@ export function MainNav() {
       </nav>
 
       {/* Mobile Menu Button */}
-      <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMobileMenu} aria-label="Toggle menu">
-        {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      <Button
+        variant="ghost"
+        size="icon"
+        className={clsx(from === "home" ? "md:hidden" : "hidden")}
+        onClick={toggleMobileMenu}
+        aria-label="Toggle menu"
+      >
+        {mobileMenuOpen ? (
+          <X className="h-5 w-5 eee" />
+        ) : (
+          <Menu className="h-5 w-5" />
+        )}
       </Button>
 
       {/* Mobile Navigation Overlay */}
@@ -71,11 +94,19 @@ export function MainNav() {
             >
               <div className="flex flex-col space-y-6">
                 <div className="flex items-center justify-between">
-                  <Link href="/" className="flex items-center space-x-2" onClick={toggleMobileMenu}>
+                  <Link
+                    href="/"
+                    className="flex items-center space-x-2"
+                    onClick={toggleMobileMenu}
+                  >
                     <ScissorsLineDashed className="h-6 w-6" />
                     <span className="font-bold">LinkSnip</span>
                   </Link>
-                  <Button variant="ghost" size="icon" onClick={toggleMobileMenu}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={toggleMobileMenu}
+                  >
                     <X className="h-5 w-5" />
                   </Button>
                 </div>
@@ -87,7 +118,9 @@ export function MainNav() {
                       href={item.href}
                       className={cn(
                         "text-sm font-medium transition-colors hover:text-primary p-2 rounded-md",
-                        pathname === item.href ? "bg-accent text-primary" : "text-muted-foreground",
+                        pathname === item.href
+                          ? "bg-accent text-primary"
+                          : "text-muted-foreground"
                       )}
                       onClick={toggleMobileMenu}
                     >
@@ -101,6 +134,5 @@ export function MainNav() {
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }
-
