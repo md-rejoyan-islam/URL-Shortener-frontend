@@ -75,7 +75,7 @@ export function UrlList() {
 
   return (
     <motion.div
-      className="space-y-4 w-fit"
+      className="space-y-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

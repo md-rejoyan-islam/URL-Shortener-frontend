@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   return (
     <div className="py-20 flex items-center justify-center min-h-[calc(100vh-5rem)]">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md" showWhile={false}>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
           <CardDescription>

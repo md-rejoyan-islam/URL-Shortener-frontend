@@ -23,10 +23,11 @@ const cardVariants = {
 
 type CardProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onDrag"> & {
   variant?: "default" | "neon" | "feature" | "glass";
+  showWhile?: boolean;
 } & HTMLMotionProps<"div">;
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant = "default", ...props }, ref) => (
+  ({ className, variant = "default", showWhile = true, ...props }, ref) => (
     <motion.div
       ref={ref}
       className={cn(
@@ -38,8 +39,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       )}
       initial="hidden"
       animate="visible"
-      whileHover="hover"
-      whileTap="tap"
+      {...(showWhile ? { whileHover: "hover", whileTap: "tap" } : {})}
       variants={cardVariants}
       {...props}
     />

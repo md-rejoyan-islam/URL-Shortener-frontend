@@ -46,7 +46,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md" showWhile={false}>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">
             Create an account

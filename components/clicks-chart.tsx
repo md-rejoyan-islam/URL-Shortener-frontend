@@ -36,7 +36,7 @@ export function ClicksChart() {
           color: "hsl(var(--chart-1))",
         },
       }}
-      className="h-[300px]"
+      className="h-[340px] w-full mx-auto"
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart

@@ -29,7 +29,7 @@ export function GeoChart() {
           color: "hsl(var(--chart-1))",
         },
       }}
-      className="h-[400px]"
+      className="h-[400px] w-full mx-auto"
     >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart

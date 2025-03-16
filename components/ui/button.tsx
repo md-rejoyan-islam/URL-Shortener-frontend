@@ -47,6 +47,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : (motion.button as React.ElementType);
 
+    const motionProps = {
+      whileTap: { scale: 0.97 },
+      whileHover: variant !== "ghost" ? { scale: 1.02 } : undefined,
+      transition: { duration: 0.2 },
+    };
+
     return (
       <Comp
         className={cn(
@@ -54,9 +60,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           "cursor-pointer"
         )}
         ref={ref}
-        whileTap={{ scale: 0.97 }}
-        whileHover={variant !== "ghost" ? { scale: 1.02 } : undefined}
-        transition={{ duration: 0.2 }}
+        {...(Comp === motion.button ? motionProps : {})}
         {...props}
       />
     );
