@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 import * as React from "react";
 
 const cardVariants = {
@@ -21,29 +21,30 @@ const cardVariants = {
   },
 };
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
-    variant?: "default" | "neon" | "feature" | "glass";
-  }
->(({ className, variant = "default", ...props }, ref) => (
-  <motion.div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
-      variant === "neon" && "neon-card border-0",
-      variant === "feature" && "feature-card",
-      variant === "glass" && "glass-card",
-      className
-    )}
-    initial="hidden"
-    animate="visible"
-    whileHover="hover"
-    whileTap="tap"
-    variants={cardVariants}
-    {...props}
-  />
-));
+type CardProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onDrag"> & {
+  variant?: "default" | "neon" | "feature" | "glass";
+} & HTMLMotionProps<"div">;
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant = "default", ...props }, ref) => (
+    <motion.div
+      ref={ref}
+      className={cn(
+        "rounded-lg border bg-card text-card-foreground shadow-sm",
+        variant === "neon" && "neon-card border-0",
+        variant === "feature" && "feature-card",
+        variant === "glass" && "glass-card",
+        className
+      )}
+      initial="hidden"
+      animate="visible"
+      whileHover="hover"
+      whileTap="tap"
+      variants={cardVariants}
+      {...props}
+    />
+  )
+);
 Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<
@@ -58,27 +59,26 @@ const CardHeader = React.forwardRef<
 ));
 CardHeader.displayName = "CardHeader";
 
-const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <motion.h3
-    ref={ref}
-    className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
-      className
-    )}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ delay: 0.1, duration: 0.3 }}
-    {...props}
-  />
-));
+const CardTitle = React.forwardRef<HTMLHeadingElement, HTMLMotionProps<"h3">>(
+  ({ className, ...props }, ref) => (
+    <motion.h3
+      ref={ref}
+      className={cn(
+        "text-2xl font-semibold leading-none tracking-tight",
+        className
+      )}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.1, duration: 0.3 }}
+      {...props}
+    />
+  )
+);
 CardTitle.displayName = "CardTitle";
 
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLMotionProps<"p">
 >(({ className, ...props }, ref) => (
   <motion.p
     ref={ref}
@@ -91,34 +91,32 @@ const CardDescription = React.forwardRef<
 ));
 CardDescription.displayName = "CardDescription";
 
-const CardContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <motion.div
-    ref={ref}
-    className={cn("p-6 pt-0 w-full", className)}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ delay: 0.3, duration: 0.3 }}
-    {...props}
-  />
-));
+const CardContent = React.forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(
+  ({ className, ...props }, ref) => (
+    <motion.div
+      ref={ref}
+      className={cn("p-6 pt-0 w-full", className)}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.3, duration: 0.3 }}
+      {...props}
+    />
+  )
+);
 CardContent.displayName = "CardContent";
 
-const CardFooter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <motion.div
-    ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ delay: 0.4, duration: 0.3 }}
-    {...props}
-  />
-));
+const CardFooter = React.forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(
+  ({ className, ...props }, ref) => (
+    <motion.div
+      ref={ref}
+      className={cn("flex items-center p-6 pt-0", className)}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.4, duration: 0.3 }}
+      {...props}
+    />
+  )
+);
 CardFooter.displayName = "CardFooter";
 
 export {

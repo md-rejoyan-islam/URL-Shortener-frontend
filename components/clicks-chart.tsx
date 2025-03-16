@@ -1,7 +1,14 @@
-"use client"
+"use client";
 
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const data = [
   { date: "2023-01-01", clicks: 45 },
@@ -18,7 +25,7 @@ const data = [
   { date: "2023-01-12", clicks: 97 },
   { date: "2023-01-13", clicks: 105 },
   { date: "2023-01-14", clicks: 115 },
-]
+];
 
 export function ClicksChart() {
   return (
@@ -44,14 +51,21 @@ export function ClicksChart() {
           <XAxis
             dataKey="date"
             tickFormatter={(value) => {
-              const date = new Date(value)
-              return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+              const date = new Date(value);
+              return date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              });
             }}
             tickLine={false}
             axisLine={false}
             padding={{ left: 10, right: 10 }}
           />
-          <YAxis tickLine={false} axisLine={false} tickFormatter={(value) => `${value}`} />
+          <YAxis
+            tickLine={false}
+            axisLine={false}
+            tickFormatter={(value) => `${value}`}
+          />
           <Tooltip content={<ChartTooltipContent />} />
           <Line
             type="monotone"
@@ -65,6 +79,5 @@ export function ClicksChart() {
         </LineChart>
       </ResponsiveContainer>
     </ChartContainer>
-  )
+  );
 }
-
