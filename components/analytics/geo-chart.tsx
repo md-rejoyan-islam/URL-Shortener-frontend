@@ -20,7 +20,13 @@ const data = [
   { country: "Spain", clicks: 65 },
 ];
 
-export function GeoChart() {
+export function GeoChart({
+  locations,
+}: {
+  locations: { country: string; clicks: number }[] | undefined;
+}) {
+  console.log(locations);
+
   return (
     <ChartContainer
       config={{
@@ -33,7 +39,10 @@ export function GeoChart() {
     >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          data={data}
+          data={locations?.map((location) => ({
+            country: location.country || "Unknown",
+            clicks: location.clicks,
+          }))}
           layout="vertical"
           margin={{
             top: 5,

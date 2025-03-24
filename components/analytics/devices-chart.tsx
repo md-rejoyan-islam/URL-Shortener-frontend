@@ -7,15 +7,15 @@ import {
 } from "@/components/ui/chart";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
-const data = [
-  { name: "Mobile", value: 1250 },
-  { name: "Desktop", value: 840 },
-  { name: "Tablet", value: 260 },
-];
-
 const COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)"];
 
-export function DevicesChart() {
+export function DevicesChart({
+  deviceClicks,
+}: {
+  deviceClicks: { name: string; value: number }[] | undefined;
+}) {
+  console.log(deviceClicks);
+
   return (
     <>
       <ChartContainer
@@ -29,7 +29,7 @@ export function DevicesChart() {
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={data}
+              data={deviceClicks}
               cx="50%"
               cy="50%"
               innerRadius={100}
@@ -38,7 +38,7 @@ export function DevicesChart() {
               paddingAngle={5}
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {deviceClicks?.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}
@@ -50,7 +50,7 @@ export function DevicesChart() {
         </ResponsiveContainer>
       </ChartContainer>
       <div className="mt-6 flex justify-center gap-8  relative">
-        {data.map((entry, index) => (
+        {deviceClicks?.map((entry, index) => (
           <div
             key={`legend-${index}`}
             className="flex flex-col items-center justify-center"
@@ -67,7 +67,8 @@ export function DevicesChart() {
             </span>
             <span className="text-sm text-muted-foreground">
               {Math.round(
-                (entry.value / data.reduce((a, b) => a + b.value, 0)) * 100
+                (entry.value / deviceClicks.reduce((a, b) => a + b.value, 0)) *
+                  100
               )}
               %
             </span>

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -38,9 +39,17 @@ export default function RegisterPage() {
 
     try {
       await register(name, email, password);
+      toast({
+        description: "Account created successfully",
+        variant: "default",
+      });
       router.push("/dashboard");
-    } catch {
-      setError("Failed to create account");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An error occurred");
+      }
     }
   };
 

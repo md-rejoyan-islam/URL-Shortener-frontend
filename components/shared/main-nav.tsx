@@ -30,8 +30,6 @@ export function MainNav({
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  console.log("isAuthenticated", "Login" === "Login" && !isAuthenticated);
-
   return (
     <div className="flex items-center justify-between w-full md:w-auto md:justify-start md:gap-10">
       <Link href="/" className="flex items-center space-x-2">
@@ -46,9 +44,8 @@ export function MainNav({
             key={item.href}
             href={item.href}
             className={cn(
-              item.label === "Login" && !isAuthenticated
-                ? "block md:hidden"
-                : "",
+              item.label === "Login" && "block md:hidden",
+              item.label === "Login" && !isAuthenticated && "block md:hidden",
               "text-sm font-medium transition-colors hover:text-primary",
               pathname === item.href ? "text-primary" : "text-muted-foreground"
             )}
@@ -120,7 +117,8 @@ export function MainNav({
                         "text-sm font-medium transition-colors hover:text-primary p-2 rounded-md",
                         pathname === item.href
                           ? "bg-accent text-primary"
-                          : "text-muted-foreground"
+                          : "text-muted-foreground",
+                        item.label === "Login" && isAuthenticated && "hidden"
                       )}
                       onClick={toggleMobileMenu}
                     >

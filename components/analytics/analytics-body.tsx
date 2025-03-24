@@ -11,7 +11,43 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { analyticUrls } from "@/lib/url-api";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+interface ClickLocation {
+  country: string;
+  clicks: number;
+}
+
+interface ClickDevice {
+  name: "mobile" | "desktop" | "tablet" | "unknown";
+  value: number;
+}
+
+interface TopPerformingLink {
+  _id: string;
+  shortUrl: string;
+  clickCount: number;
+}
+interface last15DaysClicks {
+  date: string;
+  clicks: number;
+}
+
+interface AnalyticsData {
+  activeLinks: number;
+  activePercentage: number;
+  avgClickRate: number;
+  lastMonthClicks: number;
+  percentageChange: number;
+  totalClicks: number;
+  totalLinks: number;
+  topLink: TopPerformingLink;
+  locationClicks: ClickLocation[];
+  deviceClicks: ClickDevice[];
+  last15DaysClicks: last15DaysClicks[];
+}
 
 const container = {
   hidden: { opacity: 0 },
@@ -28,6 +64,28 @@ const item = {
   show: { opacity: 1, y: 0 },
 };
 export default function AnalyticsBody() {
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(
+    null
+  );
+
+  console.log(analyticsData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await analyticUrls();
+
+      setAnalyticsData(response?.data);
+    };
+
+    fetchData();
+  }, []);
+
+  const lastMonthClicksPercentage = (
+    ((analyticsData?.totalClicks || 0) -
+      (analyticsData?.lastMonthClicks || 0)) /
+    (analyticsData?.lastMonthClicks || 0)
+  ).toFixed(2);
+
   return (
     <>
       <Tabs defaultValue="overview" className="space-y-4">
@@ -54,9 +112,12 @@ export default function AnalyticsBody() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">2,350</div>
+                  <div className="text-2xl font-bold">
+                    {analyticsData?.totalClicks || 0}
+                  </div>
                   <p className="text-xs text-muted-foreground">
-                    +20.1% from last month
+                    {+lastMonthClicksPercentage > 0 ? "+" : "-"}
+                    {lastMonthClicksPercentage}% from last month
                   </p>
                 </CardContent>
               </Card>
@@ -73,9 +134,12 @@ export default function AnalyticsBody() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">12</div>
+                  <div className="text-2xl font-bold">
+                    {analyticsData?.activeLinks || 0}
+                  </div>
                   <p className="text-xs text-muted-foreground">
-                    +3 from last month
+                    {+(analyticsData?.lastMonthClicks || 0) > 0 ? "+" : "-"}
+                    {analyticsData?.lastMonthClicks || 0} from last month
                   </p>
                 </CardContent>
               </Card>
@@ -92,7 +156,9 @@ export default function AnalyticsBody() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">24.3%</div>
+                  <div className="text-2xl font-bold">
+                    {analyticsData?.avgClickRate || 0}%
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     +5.1% from last month
                   </p>
@@ -111,9 +177,11 @@ export default function AnalyticsBody() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">842</div>
+                  <div className="text-2xl font-bold">
+                    {analyticsData?.topLink?.clickCount}
+                  </div>
                   <p className="text-xs text-muted-foreground">
-                    clicks on linksnip.io/abc123
+                    clicks on {analyticsData?.topLink?.shortUrl}
                   </p>
                 </CardContent>
               </Card>
@@ -133,11 +201,16 @@ export default function AnalyticsBody() {
               <CardHeader>
                 <CardTitle>Clicks Over Time</CardTitle>
                 <CardDescription>
-                  Click activity for all your links over the past 30 days
+                  Click activity for all your links over the past 15 days
                 </CardDescription>
               </CardHeader>
               <CardContent className="pl-2">
-                <ClicksChart />
+                <ClicksChart
+                  daysClick={analyticsData?.last15DaysClicks?.sort(
+                    (a, b) =>
+                      new Date(a.date).getDate() - new Date(b.date).getDate()
+                  )}
+                />
               </CardContent>
             </Card>
           </motion.div>
@@ -156,7 +229,7 @@ export default function AnalyticsBody() {
                 <CardDescription>Click distribution by country</CardDescription>
               </CardHeader>
               <CardContent>
-                <GeoChart />
+                <GeoChart locations={analyticsData?.locationClicks} />
               </CardContent>
             </Card>
           </motion.div>
@@ -177,7 +250,7 @@ export default function AnalyticsBody() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <DevicesChart />
+                <DevicesChart deviceClicks={analyticsData?.deviceClicks} />
               </CardContent>
             </Card>
           </motion.div>

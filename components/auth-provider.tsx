@@ -1,12 +1,14 @@
 "use client";
 
+import api from "@/lib/axios-instance";
+import axios, { AxiosResponse } from "axios";
 import type React from "react";
 
 import { createContext, useContext, useEffect, useState } from "react";
 
 type User = {
   id: string;
-  name: string;
+  username: string;
   email: string;
 } | null;
 
@@ -24,55 +26,99 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect(() => {
+  //   // Check if user is logged in
+  //   const storedUser = localStorage.getItem("user");
+  //   if (storedUser) {
+  //     setUser(JSON.parse(storedUser));
+  //   }
+  //   setIsLoading(false);
+  // }, []);
+
   useEffect(() => {
-    // Check if user is logged in
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
+    (async () => {
+      try {
+        const response = await api.get("/api/v1/auth/me", {
+          withCredentials: true,
+        });
+
+        if (response.data) {
+          setUser({
+            id: response.data?.data?.id,
+            username: response.data?.data?.username,
+            email: response.data?.data?.email,
+          });
+        }
+      } catch {
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, []);
 
   const login = async (email: string, password: string) => {
-    console.log(password);
-
     setIsLoading(true);
 
-    // Simulate API call
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        const mockUser = {
-          id: "user_" + Math.random().toString(36).substring(2, 9),
-          name: email.split("@")[0],
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const response: AxiosResponse = await api.post("/api/v1/auth/login", {
           email,
-        };
+          password,
+        });
 
-        setUser(mockUser);
-        localStorage.setItem("user", JSON.stringify(mockUser));
+        const { user } = response.data;
+
+        setUser({
+          username: user?.username,
+          email: user?.email,
+          id: user?._id,
+        });
+
+        localStorage.setItem("user", JSON.stringify(user));
+
+        resolve(response.data); // Resolve with the API response data
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          reject(
+            new Error(error.response.data.error.message || "Login failed")
+          );
+        } else {
+          reject(new Error("An unexpected error occurred"));
+        }
+      } finally {
         setIsLoading(false);
-        resolve();
-      }, 1000);
+      }
     });
   };
 
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true);
-    console.log(password);
 
-    // Simulate API call
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        const mockUser = {
-          id: "user_" + Math.random().toString(36).substring(2, 9),
-          name,
-          email,
-        };
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const response: AxiosResponse = await api.post(
+          "/api/v1/auth/register",
+          {
+            email,
+            password,
+            username: name,
+          }
+        );
 
-        setUser(mockUser);
-        localStorage.setItem("user", JSON.stringify(mockUser));
+        resolve(response.data); // Resolve with the API response data
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          reject(
+            new Error(
+              error.response.data.error.message || "Registration failed"
+            )
+          );
+        } else {
+          reject(new Error("An unexpected error occurred"));
+        }
+      } finally {
         setIsLoading(false);
-        resolve();
-      }, 1000);
+      }
     });
   };
 

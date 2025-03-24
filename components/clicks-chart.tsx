@@ -27,7 +27,11 @@ const data = [
   { date: "2023-01-14", clicks: 115 },
 ];
 
-export function ClicksChart() {
+export function ClicksChart({
+  daysClick,
+}: {
+  daysClick: { date: string; clicks: number }[] | undefined;
+}) {
   return (
     <ChartContainer
       config={{
@@ -40,7 +44,7 @@ export function ClicksChart() {
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
-          data={data}
+          data={daysClick}
           margin={{
             top: 5,
             right: 10,

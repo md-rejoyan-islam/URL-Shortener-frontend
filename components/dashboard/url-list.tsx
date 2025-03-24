@@ -1,7 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { AnimatePresence, motion } from "framer-motion";
+import { deleteUrlById, getAllUrls } from "@/lib/url-api";
+import { motion } from "framer-motion";
 import { Copy, ExternalLink, Trash2 } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 type UrlItem = {
@@ -10,42 +13,48 @@ type UrlItem = {
   shortUrl: string;
   clicks: number;
   createdAt: string;
+  qrCodeUrl: string;
 };
 
 export function UrlList() {
+  const [isLoading, setIsLoading] = useState(true);
   const [urls, setUrls] = useState<UrlItem[]>([]);
-  const { toast } = useToast();
 
   useEffect(() => {
-    // Mock data
-    const mockUrls: UrlItem[] = [
-      {
-        id: "1",
-        originalUrl:
-          "https://example.com/very/long/url/that/needs/to/be/shortened/for/better/sharing",
-        shortUrl: "https://linksnip.io/abc123",
-        clicks: 42,
-        createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-      },
-      {
-        id: "2",
-        originalUrl:
-          "https://verylongwebsiteaddress.com/with/many/parameters?param1=value1&param2=value2",
-        shortUrl: "https://linksnip.io/def456",
-        clicks: 18,
-        createdAt: new Date(Date.now() - 86400000).toISOString(),
-      },
-      {
-        id: "3",
-        originalUrl: "https://anotherexample.org/path/to/resource",
-        shortUrl: "https://linksnip.io/ghi789",
-        clicks: 7,
-        createdAt: new Date().toISOString(),
-      },
-    ];
+    (async () => {
+      try {
+        const {
+          data = [],
+        }: {
+          data: {
+            _id: string;
+            originalUrl: string;
+            shortUrl: string;
+            clicks: string[];
+            createdAt: string;
+            qrCodeUrl: string;
+          }[];
+        } = await getAllUrls();
 
-    setUrls(mockUrls);
+        setUrls(
+          data?.map((url) => ({
+            id: url._id,
+            originalUrl: url.originalUrl,
+            shortUrl: url.shortUrl,
+            clicks: url.clicks?.length,
+            createdAt: url.createdAt,
+            qrCodeUrl: url.qrCodeUrl,
+          }))
+        );
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, []);
+
+  const { toast } = useToast();
 
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
@@ -55,12 +64,35 @@ export function UrlList() {
     });
   };
 
-  const deleteUrl = (id: string) => {
-    setUrls(urls.filter((url) => url.id !== id));
-    toast({
-      title: "URL deleted",
-      description: "The shortened URL has been deleted.",
-    });
+  const deleteUrl = async (id: string) => {
+    try {
+      const { data } = await deleteUrlById(id);
+      console.log(data);
+
+      if (data) {
+        setUrls((urls) => urls.filter((url) => url.id !== id));
+        toast({
+          title: "URL deleted",
+          description: "The shortened URL has been deleted.",
+        });
+      }
+
+      // setUrls((urls) => urls.filter((url) => url.id !== id));
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "An error occurred",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "An error occurred",
+          description: "An unexpected error occurred",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   if (urls.length === 0) {
@@ -90,81 +122,105 @@ export function UrlList() {
                 </th>
                 <th className="h-12 px-4 text-left font-medium">Short URL</th>
                 <th className="h-12 px-4 text-left font-medium">Clicks</th>
+                <th className="h-12 px-4 text-left font-medium">QR Code</th>
                 <th className="h-12 px-4 text-left font-medium">Created</th>
                 <th className="h-12 px-4 text-left font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <AnimatePresence>
-                {urls.map((url) => (
-                  <motion.tr
-                    key={url.id}
-                    className="border-b transition-colors hover:bg-gray-100 "
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                    whileHover={{
-                      backgroundColor: "rgba(var(--primary-rgb), 0.05)",
-                    }}
-                  >
-                    <td className="p-4 align-middle">
-                      <div
-                        className="max-w-[200px] truncate"
-                        title={url.originalUrl}
-                      >
-                        {url.originalUrl}
-                      </div>
-                    </td>
-                    <td className="p-4 align-middle text-primary">
+              {isLoading && (
+                <tr>
+                  <td colSpan={6} className="p-4 text-center">
+                    Loading...
+                  </td>
+                </tr>
+              )}
+
+              {urls.map((url) => (
+                <motion.tr
+                  key={url.id}
+                  className="border-b transition-colors hover:bg-gray-100 "
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  whileHover={{
+                    backgroundColor: "rgba(var(--primary-rgb), 0.05)",
+                  }}
+                >
+                  <td className="p-4 align-middle">
+                    <div className="max-w-[200px] truncate">
                       <div className="flex items-center gap-2">
                         <a
-                          href={url.shortUrl}
+                          href={url.originalUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:underline"
                         >
-                          {url.shortUrl.split("//")[1]}
+                          {url.originalUrl}
                         </a>
                       </div>
-                    </td>
-                    <td className="p-4 align-middle">{url.clicks}</td>
-                    <td className="p-4 align-middle">
-                      {new Date(url.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="p-4 align-middle">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => copyToClipboard(url.shortUrl)}
+                    </div>
+                  </td>
+                  <td className="p-4 align-middle text-primary">
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={url.shortUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        {url.shortUrl.split("//")[1]}
+                      </a>
+                    </div>
+                  </td>
+                  <td className="p-4 align-middle">{url.clicks}</td>
+                  <td className="p-4 align-middle">
+                    <Image
+                      src={url?.qrCodeUrl}
+                      alt="QR Code for shortened URL"
+                      width={50}
+                      height={50}
+                      unoptimized
+                      className="w-10 h-10 object-contain "
+                    />
+                  </td>
+                  <td className="p-4 align-middle">
+                    {new Date(url.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="p-4 align-middle">
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => copyToClipboard(url.shortUrl)}
+                      >
+                        <Copy className="h-4 w-4" />
+                        <span className="sr-only">Copy</span>
+                      </Button>
+                      <Button variant="ghost" size="icon" asChild>
+                        <a
+                          href={url.shortUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
-                          <Copy className="h-4 w-4" />
-                          <span className="sr-only">Copy</span>
-                        </Button>
-                        <Button variant="ghost" size="icon" asChild>
-                          <a
-                            href={url.shortUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                            <span className="sr-only">Open</span>
-                          </a>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => deleteUrl(url.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          <span className="sr-only">Delete</span>
-                        </Button>
-                      </div>
-                    </td>
-                  </motion.tr>
-                ))}
-              </AnimatePresence>
+                          <ExternalLink className="h-4 w-4" />
+                          <span className="sr-only">Open</span>
+                        </a>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        type="button"
+                        onClick={() => deleteUrl(url.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
+                      </Button>
+                    </div>
+                  </td>
+                </motion.tr>
+              ))}
             </tbody>
           </table>
         </div>

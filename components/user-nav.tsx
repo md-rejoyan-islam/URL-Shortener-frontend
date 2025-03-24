@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 
 export function UserNav() {
   const { user, logout } = useAuth();
+
   const router = useRouter();
 
   const handleLogout = () => {
@@ -26,7 +27,7 @@ export function UserNav() {
 
   if (!user) return null;
 
-  const initials = user.name
+  const initials = user?.username
     .split(" ")
     .map((n) => n[0])
     .join("")
@@ -46,7 +47,7 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.name}</p>
+            <p className="text-sm font-medium leading-none">{user.username}</p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}
             </p>

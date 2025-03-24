@@ -29,7 +29,11 @@ export default function DashboardBody() {
           <UrlShortener />
         </CardContent>
       </Card>
-      <Card className="col-span-full overflow-x-scroll" variant="neon">
+      <Card
+        className="col-span-full overflow-x-scroll"
+        variant="neon"
+        showWhile={false}
+      >
         <CardHeader>
           <CardTitle>Your Links</CardTitle>
           <CardDescription>
