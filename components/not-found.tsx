@@ -7,8 +7,8 @@ import Link from "next/link";
 
 export default function NotFoundPage() {
   return (
-    <div className="h-screen">
-      <main className="flex-1 container min-h-screen flex flex-col items-center justify-center py-20">
+    <div className="">
+      <main className="flex-1 container min-h-screen flex flex-col items-center justify-center py-20 mx-auto">
         <motion.div
           className="w-full max-w-md mx-auto h-full text-center space-y-10"
           initial={{ opacity: 0, y: 20 }}
