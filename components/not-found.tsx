@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function NotFoundPage() {
   return (
-    <div className="">
+    <div>
       <main className="flex-1 container min-h-screen flex flex-col items-center justify-center py-20 mx-auto">
         <motion.div
           className="w-full max-w-md mx-auto h-full text-center space-y-10"
