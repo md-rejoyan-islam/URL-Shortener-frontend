@@ -1,3 +1,4 @@
+import { getCookies } from "@/app/actions/actions";
 import axios, { AxiosResponse } from "axios";
 import api from "./axios-instance";
 
@@ -9,6 +10,7 @@ export const createUrlShorten = async (
   token: string | null
 ) => {
   try {
+    const token = await getCookies();
     const response: AxiosResponse = await api.post("/api/v1/urls", details, {
       headers: {
         Authorization: `Bearer ${token}`,
