@@ -9,8 +9,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { useState } from "react";
+type UrlItem = {
+  id: string;
+  originalUrl: string;
+  shortUrl: string;
+  clicks: number;
+  createdAt: string;
+  qrCodeUrl: string;
+};
 
-export default function DashboardBody({ token }: { token: string | null }) {
+export default function DashboardBody() {
+  const [urls, setUrls] = useState<UrlItem[]>([]);
   return (
     <motion.div
       className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
@@ -26,7 +36,7 @@ export default function DashboardBody({ token }: { token: string | null }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UrlShortener token={token} />
+          <UrlShortener urls={urls} setUrls={setUrls} />
         </CardContent>
       </Card>
       <Card
@@ -41,7 +51,7 @@ export default function DashboardBody({ token }: { token: string | null }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UrlList token={token} />
+          <UrlList urls={urls} setUrls={setUrls} />
         </CardContent>
       </Card>
     </motion.div>

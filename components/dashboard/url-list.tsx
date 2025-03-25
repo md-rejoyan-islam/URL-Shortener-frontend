@@ -16,9 +16,14 @@ type UrlItem = {
   qrCodeUrl: string;
 };
 
-export function UrlList({ token }: { token: string | null }) {
+export function UrlList({
+  urls,
+  setUrls,
+}: {
+  urls: UrlItem[];
+  setUrls: (urls: UrlItem[]) => void;
+}) {
   const [isLoading, setIsLoading] = useState(true);
-  const [urls, setUrls] = useState<UrlItem[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -34,7 +39,7 @@ export function UrlList({ token }: { token: string | null }) {
             createdAt: string;
             qrCodeUrl: string;
           }[];
-        } = await getAllUrls(token);
+        } = await getAllUrls();
 
         setUrls(
           data?.map((url) => ({
@@ -52,7 +57,7 @@ export function UrlList({ token }: { token: string | null }) {
         setIsLoading(false);
       }
     })();
-  }, [token]);
+  }, []);
 
   const { toast } = useToast();
 
@@ -66,10 +71,10 @@ export function UrlList({ token }: { token: string | null }) {
 
   const deleteUrl = async (id: string) => {
     try {
-      const { data } = await deleteUrlById(id, token);
+      const { data } = await deleteUrlById(id);
 
       if (data) {
-        setUrls((urls) => urls.filter((url) => url.id !== id));
+        setUrls(urls.filter((url: UrlItem) => url.id !== id));
         toast({
           title: "URL deleted",
           description: "The shortened URL has been deleted.",

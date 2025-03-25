@@ -13,7 +13,7 @@ export default async function DashboardPage() {
           heading="Dashboard"
           text="Create and manage your shortened URLs."
         />
-        <DashboardBody token={token} />
+        <DashboardBody />
       </div>
     </div>
   );

@@ -24,7 +24,22 @@ import { Alert, AlertDescription } from "../ui/alert";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 
-export function UrlShortener({ token }: { token: string | null }) {
+type UrlItem = {
+  id: string;
+  originalUrl: string;
+  shortUrl: string;
+  clicks: number;
+  createdAt: string;
+  qrCodeUrl: string;
+};
+
+export function UrlShortener({
+  urls,
+  setUrls,
+}: {
+  urls?: UrlItem[];
+  setUrls?: (urls: UrlItem[]) => void;
+}) {
   const { user } = useAuth();
 
   const [url, setUrl] = useState("");
@@ -73,8 +88,15 @@ export function UrlShortener({ token }: { token: string | null }) {
     };
 
     try {
-      const { data } = await createUrlShorten(details, token);
+      const {
+        data,
+      }: {
+        data: UrlItem;
+      } = await createUrlShorten(details);
 
+      if (setUrls) {
+        setUrls([...(urls || []), data]);
+      }
       setShortUrl(data?.shortUrl);
       setQrCode(data?.qrCodeUrl);
     } catch (error) {

@@ -63,20 +63,20 @@ const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
 };
-export default function AnalyticsBody({ token }: { token: string | null }) {
+export default function AnalyticsBody() {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(
     null
   );
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await analyticUrls(token);
+      const response = await analyticUrls();
 
       setAnalyticsData(response?.data);
     };
 
     fetchData();
-  }, [token]);
+  }, []);
 
   const lastMonthClicksPercentage = (
     ((analyticsData?.totalClicks || 0) -
