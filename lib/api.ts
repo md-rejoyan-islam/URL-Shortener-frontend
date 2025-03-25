@@ -24,11 +24,20 @@ export async function loginUser(
   }
 }
 
+interface RegistrationResponse {
+  message: string;
+  data: {
+    _id: string;
+    email: string;
+    username: string;
+  };
+}
+
 // Register API call
 export async function registerUser(
   email: string,
   password: string
-): Promise<any> {
+): Promise<RegistrationResponse> {
   try {
     const response: AxiosResponse = await api.post("/api/register", {
       email,
