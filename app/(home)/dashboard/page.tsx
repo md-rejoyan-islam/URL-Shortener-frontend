@@ -1,11 +1,13 @@
 import DashboardBody from "@/components/dashboard/dashboard-body";
 import { PageHeader } from "@/components/page-header";
-import { cookies } from "next/headers";
+import { Metadata } from "next";
 
-export default async function DashboardPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value || null;
+export const metadata: Metadata = {
+  title: "LinkSnip - Dashboard",
+  description: "Create and manage your shortened URLs",
+};
 
+export default function DashboardPage() {
   return (
     <div className="flex min-h-screen flex-col py-8 pt-6">
       <div>

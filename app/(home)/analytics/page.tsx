@@ -1,5 +1,11 @@
 import AnalyticsBody from "@/components/analytics/analytics-body";
 import { PageHeader } from "@/components/page-header";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "LinkSnip - Analytics",
+  description: "View detailed analytics for your shortened URLs",
+};
 
 export default function AnalyticsPage() {
   return (
