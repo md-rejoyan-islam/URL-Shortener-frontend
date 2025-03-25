@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# URL Shortener
 
-## Getting Started
+✂️ **Shorten. Share. Track.** A sleek, modern URL shortening tool built with simplicity and speed in mind.
 
-First, run the development server:
+![URL Shortener Banner](banner.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌟 Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Welcome to **URL Shortener**, a lightweight and user-friendly application designed to transform long, unwieldy URLs into short, shareable links. Whether you're sharing on social media, embedding in emails, or just tidying up a link, this tool has you covered. Built with a clean frontend and powered by modern web technologies, it’s fast, responsive, and easy to use.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🔗 **Live Preview**: [Preview](https://url-shortener-client-app.vercel.app/)  
+📂 **Source Code**: [GitHub Repository](https://github.com/md-rejoyan-islam/URL-Shortener-frontend)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Instant URL Shortening**: Paste a long URL and get a short one in seconds.
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices.
+- **Copy to Clipboard**: One-click copying for quick sharing.
+- **QR Code Generation**: Scan the QR code to access the shortened URL.
+- **Link Management**: Keep track of your shortened links in one place.
+- **Analytics Dashboard**: Monitor link performance and engagement over time.
+- **Secure & Reliable**: Built with robust security measures to protect your data.
+- **Lightweight**: Minimalist UI with maximum performance.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🛠️ Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Frontend**: Next.js , React.js, TypeScript , Framer Motion
+- **Backend**: Node.js, Express.js, MongoDB
+- **Styling**: Tailwind CSS, Shadcn UI
+- **Deployment**: Vercel
+- **API**: [URL Shortener API](https://url-shortener-server-hmoq.onrender.com)
+- **Backend Repository**: [GitHub Repository](https://github.com/md-rejoyan-islam/URL-Shortener-backend)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📬 Contact
+
+---
+
+Got questions, ideas, or just want to say hi? Reach out!
+
+- **Author**: Md Rejoyan Islam
+- **GitHub**: [md-rejoyan-islam](https://github.com/md-rejoyan-islam)
+- **LinkedIn**: [Md Rejoyan Islam](https://www.linkedin.com/in/md-rejoyan-islam/)
+- **Portfolio**: [https://md-rejoyan-islam.github.io](https://md-rejoyan-islam.github.io)
+- **Email**: [rejoyanislam0014@gmail.com](mailto:rejoyanislam0014@gmail.com)
+
+---
+
+## 🌟 Show Your Support
+
+If you like this project, give it a ⭐ on GitHub! It means the world to me and keeps the motivation flowing.

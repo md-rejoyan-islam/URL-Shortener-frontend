@@ -10,22 +10,7 @@ import {
   YAxis,
 } from "recharts";
 
-const data = [
-  { date: "2023-01-01", clicks: 45 },
-  { date: "2023-01-02", clicks: 52 },
-  { date: "2023-01-03", clicks: 49 },
-  { date: "2023-01-04", clicks: 63 },
-  { date: "2023-01-05", clicks: 58 },
-  { date: "2023-01-06", clicks: 72 },
-  { date: "2023-01-07", clicks: 68 },
-  { date: "2023-01-08", clicks: 75 },
-  { date: "2023-01-09", clicks: 80 },
-  { date: "2023-01-10", clicks: 92 },
-  { date: "2023-01-11", clicks: 86 },
-  { date: "2023-01-12", clicks: 97 },
-  { date: "2023-01-13", clicks: 105 },
-  { date: "2023-01-14", clicks: 115 },
-];
+
 
 export function ClicksChart({
   daysClick,
