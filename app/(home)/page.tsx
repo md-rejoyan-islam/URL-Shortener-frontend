@@ -1,13 +1,16 @@
 import { Features } from "@/components/home/features";
 import { UrlShortener } from "@/components/home/url-shortener";
 import type { Metadata } from "next";
+import { getCookies } from "../actions/actions";
 
 export const metadata: Metadata = {
   title: "LinkSnip - URL Shortener",
   description: "Shorten your URLs and track their performance",
 };
 
-export default function Home() {
+export default async function Home() {
+  const token = await getCookies();
+
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
@@ -19,7 +22,7 @@ export default function Home() {
             LinkSnip helps you create shorter links, QR codes, and track your
             link performance with detailed analytics.
           </p>
-          <UrlShortener />
+          <UrlShortener token={token} />
         </div>
       </section>
       <Features />

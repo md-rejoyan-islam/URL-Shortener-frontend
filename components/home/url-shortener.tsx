@@ -24,7 +24,7 @@ import { Alert, AlertDescription } from "../ui/alert";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 
-export function UrlShortener() {
+export function UrlShortener({ token }: { token: string | null }) {
   const { user } = useAuth();
 
   const [url, setUrl] = useState("");
@@ -73,7 +73,7 @@ export function UrlShortener() {
     };
 
     try {
-      const { data } = await createUrlShorten(details);
+      const { data } = await createUrlShorten(details, token);
 
       setShortUrl(data?.shortUrl);
       setQrCode(data?.qrCodeUrl);

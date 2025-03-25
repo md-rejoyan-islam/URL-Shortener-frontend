@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
-export default function DashboardBody() {
+export default function DashboardBody({ token }: { token: string | null }) {
   return (
     <motion.div
       className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
@@ -26,7 +26,7 @@ export default function DashboardBody() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UrlShortener />
+          <UrlShortener token={token} />
         </CardContent>
       </Card>
       <Card
@@ -41,7 +41,7 @@ export default function DashboardBody() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UrlList />
+          <UrlList token={token} />
         </CardContent>
       </Card>
     </motion.div>

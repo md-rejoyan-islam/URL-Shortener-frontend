@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { getCookies } from "./actions/actions";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -13,15 +14,16 @@ export const metadata: Metadata = {
   description: "Shorten your URLs and track their performance",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const token = await getCookies();
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <AuthProvider>
+        <AuthProvider token={token}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

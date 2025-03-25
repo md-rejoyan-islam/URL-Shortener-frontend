@@ -1,5 +1,6 @@
 "use client";
 
+import { removeCookies, serverLogin } from "@/app/actions/actions";
 import api from "@/lib/axios-instance";
 import axios, { AxiosResponse } from "axios";
 import type React from "react";
@@ -22,24 +23,23 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({
+  children,
+  token,
+}: {
+  children: React.ReactNode;
+  token: string | null;
+}) {
   const [user, setUser] = useState<User>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   // Check if user is logged in
-  //   const storedUser = localStorage.getItem("user");
-  //   if (storedUser) {
-  //     setUser(JSON.parse(storedUser));
-  //   }
-  //   setIsLoading(false);
-  // }, []);
 
   useEffect(() => {
     (async () => {
       try {
         const response = await api.get("/api/v1/auth/me", {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (response.data) {
@@ -54,19 +54,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(false);
       }
     })();
-  }, []);
+  }, [token]);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
 
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const response: AxiosResponse = await api.post("/api/v1/auth/login", {
-          email,
-          password,
-        });
+        const response = await serverLogin(email, password);
 
-        const { user } = response.data;
+        const { user } = response;
 
         setUser({
           username: user?.username,
@@ -78,13 +75,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         resolve(response.data); // Resolve with the API response data
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          reject(
-            new Error(error.response.data.error.message || "Login failed")
-          );
-        } else {
-          reject(new Error("An unexpected error occurred"));
-        }
+        reject(
+          new Error(
+            (error as unknown as { message?: string })?.message ||
+              "An unexpected error occurred"
+          )
+        );
       } finally {
         setIsLoading(false);
       }
@@ -122,7 +118,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const logout = () => {
+  const logout = async () => {
+    removeCookies();
     setUser(null);
     localStorage.removeItem("user");
   };

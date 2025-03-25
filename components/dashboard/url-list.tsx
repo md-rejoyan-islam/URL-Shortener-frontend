@@ -16,7 +16,7 @@ type UrlItem = {
   qrCodeUrl: string;
 };
 
-export function UrlList() {
+export function UrlList({ token }: { token: string | null }) {
   const [isLoading, setIsLoading] = useState(true);
   const [urls, setUrls] = useState<UrlItem[]>([]);
 
@@ -34,7 +34,7 @@ export function UrlList() {
             createdAt: string;
             qrCodeUrl: string;
           }[];
-        } = await getAllUrls();
+        } = await getAllUrls(token);
 
         setUrls(
           data?.map((url) => ({
@@ -52,7 +52,7 @@ export function UrlList() {
         setIsLoading(false);
       }
     })();
-  }, []);
+  }, [token]);
 
   const { toast } = useToast();
 
@@ -66,8 +66,7 @@ export function UrlList() {
 
   const deleteUrl = async (id: string) => {
     try {
-      const { data } = await deleteUrlById(id);
-      console.log(data);
+      const { data } = await deleteUrlById(id, token);
 
       if (data) {
         setUrls((urls) => urls.filter((url) => url.id !== id));
