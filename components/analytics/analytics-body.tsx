@@ -227,7 +227,13 @@ export default function AnalyticsBody() {
                 <CardDescription>Click distribution by country</CardDescription>
               </CardHeader>
               <CardContent>
-                <GeoChart locations={analyticsData?.locationClicks} />
+                {analyticsData?.locationClicks.length === 0 ? (
+                  <p className="text-muted-foreground py-10 text-center">
+                    No clicks recorded yet
+                  </p>
+                ) : (
+                  <GeoChart locations={analyticsData?.locationClicks} />
+                )}
               </CardContent>
             </Card>
           </motion.div>
@@ -248,7 +254,13 @@ export default function AnalyticsBody() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <DevicesChart deviceClicks={analyticsData?.deviceClicks} />
+                {analyticsData?.deviceClicks.length === 0 ? (
+                  <p className="text-muted-foreground py-10 text-center">
+                    No device data available yet
+                  </p>
+                ) : (
+                  <DevicesChart deviceClicks={analyticsData?.deviceClicks} />
+                )}
               </CardContent>
             </Card>
           </motion.div>

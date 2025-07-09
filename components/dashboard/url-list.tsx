@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { deleteUrlById, getAllUrls } from "@/lib/url-api";
 import { motion } from "framer-motion";
 import { Copy, ExternalLink, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type UrlItem = {
   id: string;
@@ -59,14 +59,9 @@ export function UrlList({
     })();
   }, []);
 
-  const { toast } = useToast();
-
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
-    toast({
-      title: "Copied to clipboard",
-      description: "The URL has been copied to your clipboard.",
-    });
+    toast.success("URL copied to clipboard");
   };
 
   const deleteUrl = async (id: string) => {
@@ -75,26 +70,15 @@ export function UrlList({
 
       if (data) {
         setUrls(urls.filter((url: UrlItem) => url.id !== id));
-        toast({
-          title: "URL deleted",
-          description: "The shortened URL has been deleted.",
-        });
+        toast.success("URL deleted successfully");
       }
 
       // setUrls((urls) => urls.filter((url) => url.id !== id));
     } catch (error) {
       if (error instanceof Error) {
-        toast({
-          title: "An error occurred",
-          description: error.message,
-          variant: "destructive",
-        });
+        toast.error("Failed to delete URL");
       } else {
-        toast({
-          title: "An error occurred",
-          description: "An unexpected error occurred",
-          variant: "destructive",
-        });
+        toast.error("An unexpected error occurred");
       }
     }
   };

@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from "@/components/auth-provider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,12 +10,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/providers/auth-provider";
 
 import { LogOut, Tangent, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function UserNav() {
   const { user, logout } = useAuth();
+
+  console.log("UserNav user:", user);
 
   const router = useRouter();
 

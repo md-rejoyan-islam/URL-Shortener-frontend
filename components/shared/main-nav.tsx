@@ -33,8 +33,10 @@ export function MainNav({
   return (
     <div className="flex items-center justify-between w-full md:w-auto md:justify-start md:gap-10">
       <Link href="/" className="flex items-center space-x-2">
-        <ScissorsLineDashed className="h-6 w-6" />
-        <span className="font-bold inline-block">LinkSnip</span>
+        <ScissorsLineDashed className="h-7 w-7  text-purple-800 dark:text-purple-600" />
+        <span className="font-bold text-lg inline-block bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 text-transparent bg-clip-text">
+          LinkSnip
+        </span>
       </Link>
 
       {/* Desktop Navigation */}

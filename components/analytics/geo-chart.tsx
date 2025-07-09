@@ -7,19 +7,6 @@ import {
 } from "@/components/ui/chart";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
-const data = [
-  { country: "United States", clicks: 420 },
-  { country: "United Kingdom", clicks: 312 },
-  { country: "Germany", clicks: 245 },
-  { country: "France", clicks: 190 },
-  { country: "Japan", clicks: 167 },
-  { country: "Canada", clicks: 152 },
-  { country: "Australia", clicks: 134 },
-  { country: "Brazil", clicks: 98 },
-  { country: "India", clicks: 87 },
-  { country: "Spain", clicks: 65 },
-];
-
 export function GeoChart({
   locations,
 }: {

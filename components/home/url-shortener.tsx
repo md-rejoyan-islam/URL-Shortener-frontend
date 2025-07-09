@@ -5,7 +5,6 @@ import type React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import { createUrlShorten } from "@/lib/url-api";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -19,7 +18,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { useAuth } from "../auth-provider";
+import { toast } from "sonner";
+import { useAuth } from "../../providers/auth-provider";
 import { Alert, AlertDescription } from "../ui/alert";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
@@ -47,7 +47,6 @@ export function UrlShortener({
   const [isLoading, setIsLoading] = useState(false);
   const [useCustomId, setUseCustomId] = useState(false);
   const [qrCode, setQrCode] = useState("");
-  const { toast } = useToast();
 
   const [customId, setCustomId] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -112,8 +111,7 @@ export function UrlShortener({
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shortUrl);
-    toast({
-      title: "Copied to clipboard",
+    toast.success("Copied to clipboard", {
       description: "The shortened URL has been copied to your clipboard.",
     });
   };
@@ -129,8 +127,7 @@ export function UrlShortener({
     link.click();
     document.body.removeChild(link);
 
-    toast({
-      title: "QR Code downloaded",
+    toast.success("QR Code downloaded", {
       description: "The QR code has been downloaded to your device.",
     });
   };

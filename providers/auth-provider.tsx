@@ -71,9 +71,7 @@ export function AuthProvider({
           id: user?._id,
         });
 
-        localStorage.setItem("user", JSON.stringify(user));
-
-        resolve(response.data); // Resolve with the API response data
+        resolve(response.data);
       } catch (error) {
         reject(
           new Error(
@@ -121,7 +119,6 @@ export function AuthProvider({
   const logout = async () => {
     removeCookies();
     setUser(null);
-    localStorage.removeItem("user");
   };
 
   return (

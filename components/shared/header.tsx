@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import Link from "next/link";
-import { useAuth } from "../auth-provider";
+import { useAuth } from "../../providers/auth-provider";
 import { Button } from "../ui/button";
 import { UserNav } from "../user-nav";
 import { MainNav } from "./main-nav";
