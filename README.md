@@ -1,58 +1,75 @@
-# URL Shortener
+# URL Shortener - Client
 
-✂️ **Shorten. Share. Track.** A sleek, modern URL shortening tool built with simplicity and speed in mind.
+This is the client-side application for the URL Shortener project, built with Next.js, TypeScript, and Tailwind CSS. It provides a user-friendly interface for shortening URLs, managing shortened links, and viewing analytics.
 
-![URL Shortener Banner](banner.png)
+## ✨ Features
 
----
+- **User Authentication:** Secure user registration and login functionality.
+- **URL Shortening:** Quickly shorten long URLs with the option to create custom aliases.
+- **Dashboard:** View and manage all your shortened URLs in one place.
+- **Analytics:** Track the performance of your shortened links with detailed analytics, including:
+  - **Clicks Chart:** Visualize the number of clicks over time.
+  - **Devices Chart:** See which devices are used to access your links.
+  - **Geo Chart:** Understand the geographical distribution of your audience.
+- **Responsive Design:** A fully responsive layout that works on all devices.
+- **Theme Toggle:** Switch between light and dark themes for a personalized experience.
 
-## 🌟 Overview
+## 🚀 Getting Started
 
-Welcome to **URL Shortener**, a lightweight and user-friendly application designed to transform long, unwieldy URLs into short, shareable links. Whether you're sharing on social media, embedding in emails, or just tidying up a link, this tool has you covered. Built with a clean frontend and powered by modern web technologies, it’s fast, responsive, and easy to use.
+### Prerequisites
 
-🔗 **Live Preview**: [Preview](https://url-shortener-client-app.vercel.app/)  
-📂 **Source Code**: [GitHub Repository](https://github.com/md-rejoyan-islam/URL-Shortener-frontend)
+- Node.js (v20 or higher)
+- npm or yarn
 
----
+### Installation
 
-## 🚀 Features
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/url-shortener.git
+    ```
+2.  Navigate to the client directory:
+    ```bash
+    cd url-shortener/client
+    ```
+3.  Install the dependencies:
+    ```bash
+    npm install
+    ```
+4.  Create a `.env.local` file in the root of the client directory and add the following environment variables:
+    ```env
+    NEXT_PUBLIC_API_URL = http://localhost:5080
+    NEXT_PUBLIC_COOKIES_EXPIRES = 2592000
+    CLIENT_URL = http://localhost:3000
+    ```
+5.  Start the development server:
+    ```bash
+    npm run dev
+    ```
+6.  Open your browser and navigate to `http://localhost:3000`.
 
-- **Instant URL Shortening**: Paste a long URL and get a short one in seconds.
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices.
-- **Copy to Clipboard**: One-click copying for quick sharing.
-- **QR Code Generation**: Scan the QR code to access the shortened URL.
-- **Link Management**: Keep track of your shortened links in one place.
-- **Analytics Dashboard**: Monitor link performance and engagement over time.
-- **Secure & Reliable**: Built with robust security measures to protect your data.
-- **Lightweight**: Minimalist UI with maximum performance.
+## 🛠️ Built With
 
----
+- [Next.js](https://nextjs.org/) - The React framework for production.
+- [TypeScript](https://www.typescriptlang.org/) - A typed superset of JavaScript that compiles to plain JavaScript.
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapid UI development.
+- [Radix UI](https://www.radix-ui.com/) - A collection of unstyled, accessible, and customizable UI components.
+- [Recharts](https://recharts.org/) - A composable charting library built on React components.
+- [Axios](https://axios-http.com/) - A promise-based HTTP client for the browser and Node.js.
+- [Zod](https://zod.dev/) - A TypeScript-first schema declaration and validation library.
+- [React Hook Form](https://react-hook-form.com/) - A performant, flexible, and extensible forms library for React.
 
-## 🛠️ Tech Stack
+## 🔗 Links
 
-- **Frontend**: Next.js , React.js, TypeScript , Framer Motion
-- **Backend**: Node.js, Express.js, MongoDB
-- **Styling**: Tailwind CSS, Shadcn UI
-- **Deployment**: Vercel
-- **API**: [URL Shortener API](https://url-shortener-server-hmoq.onrender.com)
-- **Backend Repository**: [GitHub Repository](https://github.com/md-rejoyan-islam/URL-Shortener-backend)
-
----
+- 🔗 **Live Preview**: [Preview](https://url-shortener-client-app.vercel.app/)
+- 📂 **Backend Repository**: [GitHub Repository](https://github.com/md-rejoyan-islam/URL-Shortener-backend.git)
+- 📂 **Source Code**: [GitHub Repository](https://github.com/md-rejoyan-islam/URL-Shortener-frontend/)
 
 ## 📬 Contact
 
----
-
-Got questions, ideas, or just want to say hi? Reach out!
+If you have any questions, suggestions, or just want to connect, feel free to reach out:
 
 - **Author**: Md Rejoyan Islam
 - **GitHub**: [md-rejoyan-islam](https://github.com/md-rejoyan-islam)
 - **LinkedIn**: [Md Rejoyan Islam](https://www.linkedin.com/in/md-rejoyan-islam/)
 - **Portfolio**: [https://md-rejoyan-islam.github.io](https://md-rejoyan-islam.github.io)
 - **Email**: [rejoyanislam0014@gmail.com](mailto:rejoyanislam0014@gmail.com)
-
----
-
-## 🌟 Show Your Support
-
-If you like this project, give it a ⭐ on GitHub! It means the world to me and keeps the motivation flowing.
